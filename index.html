@@ -709,15 +709,49 @@ function downloadPDF() {
     return;
   }
   try {
-    const element = document.querySelector('.container');
+    const root = document.documentElement;
+    const container = document.querySelector('.container');
+
+    const savedStyles = {};
+    ['--bg','--surface','--surface-alt','--border','--text','--text-secondary','--text-muted',
+     '--accent','--accent-hover','--accent-subtle','--metric','--metric-bg',
+     '--tag-dg','--tag-dg-bg','--tag-dp','--tag-dp-bg','--tag-de','--tag-de-bg',
+     '--tag-cloud','--tag-cloud-bg','--shadow','--shadow-lg'].forEach(v => {
+      savedStyles[v] = root.style.getPropertyValue(v);
+    });
+
+    const lightVars = {
+      '--bg':'#FFFFFF','--surface':'#FFFFFF','--surface-alt':'#F8FAFC','--border':'#D1D5DB',
+      '--text':'#000000','--text-secondary':'#374151','--text-muted':'#6B7280',
+      '--accent':'#2563EB','--accent-hover':'#1D4ED8','--accent-subtle':'#EFF6FF',
+      '--metric':'#059669','--metric-bg':'#F0FDF4',
+      '--tag-dg':'#2563EB','--tag-dg-bg':'#EFF6FF',
+      '--tag-dp':'#7C3AED','--tag-dp-bg':'#F5F3FF',
+      '--tag-de':'#D97706','--tag-de-bg':'#FFFBEB',
+      '--tag-cloud':'#0891B2','--tag-cloud-bg':'#ECFEFF',
+      '--shadow':'none','--shadow-lg':'none'
+    };
+    Object.entries(lightVars).forEach(([k,v]) => root.style.setProperty(k, v));
+
+    const toolbar = document.querySelector('.toolbar');
+    toolbar.style.display = 'none';
+
     const opt = {
-      margin: [0.4, 0.4, 0.4, 0.4],
+      margin: [0.3, 0.3, 0.3, 0.3],
       filename: 'CV-Fabian-Ojeda-Data-Governance-Engineer.pdf',
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      html2canvas: { scale: 3, useCORS: true, windowWidth: 1100, scrollY: 0, scrollX: 0 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
-    html2pdf().set(opt).from(element).save();
+
+    html2pdf().set(opt).from(container).save().then(() => {
+      Object.entries(savedStyles).forEach(([k,v]) => {
+        if (v) root.style.setProperty(k, v);
+        else root.style.removeProperty(k);
+      });
+      toolbar.style.display = '';
+    });
   } catch(e) {
     window.print();
   }
