@@ -704,7 +704,23 @@ function applyLang() {
 }
 
 function downloadPDF() {
-  window.print();
+  if (typeof html2pdf === 'undefined') {
+    window.print();
+    return;
+  }
+  try {
+    const element = document.querySelector('.container');
+    const opt = {
+      margin: [0.4, 0.4, 0.4, 0.4],
+      filename: 'CV-Fabian-Ojeda-Data-Governance-Engineer.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  } catch(e) {
+    window.print();
+  }
 }
 
 applyLang();
