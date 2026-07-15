@@ -205,6 +205,7 @@ body{
 }
 .exp-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;margin-bottom:.35rem}
 .exp-company{font-size:.88rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.5rem}
+.exp-company-desc{font-size:.72rem;font-weight:400;color:var(--text-muted);font-style:italic;margin-left:.25rem}
 .exp-logo{width:32px;height:32px;border-radius:6px;object-fit:contain;background:#fff;padding:3px;border:1px solid var(--border)}
 .exp-logo-tenpo{background:#000;border-color:#000}
 .exp-logo-itau{background:#FF6F00;border-color:#FF6F00}
@@ -310,6 +311,7 @@ body{
   .metric-label{font-size:5pt}
   /* Experience */
   .exp-company{font-size:7.5pt}
+  .exp-company-desc{font-size:6pt}
   .exp-role,.exp-date{font-size:6pt}
   .exp-list li{font-size:6.5pt;line-height:1.3;text-align:justify}
   .exp-card{margin-bottom:.35rem}
@@ -523,7 +525,7 @@ body{
         <div class="exp-card">
           <div class="exp-dot" style="background:var(--metric)"></div>
           <div class="exp-header">
-            <span class="exp-company"><img src="Fotos/Tenpo Logo.webp" alt="Tenpo" class="exp-logo exp-logo-tenpo">TENPO</span>
+            <span class="exp-company"><img src="Fotos/Tenpo Logo.webp" alt="Tenpo" class="exp-logo exp-logo-tenpo"><span data-i18n="exp_1_company">TENPO</span></span>
             <span class="exp-date" data-i18n="exp_1_date">2023 – Junio 2026</span>
           </div>
           <div class="exp-role" data-i18n="exp_1_role">Data Governance Lead</div>
@@ -540,7 +542,7 @@ body{
         <div class="exp-card">
           <div class="exp-dot"></div>
           <div class="exp-header">
-            <span class="exp-company"><img src="Fotos/Uber Logo.png" alt="Uber" class="exp-logo">UBER</span>
+            <span class="exp-company"><img src="Fotos/Uber Logo.png" alt="Uber" class="exp-logo"><span data-i18n="exp_2_company">UBER</span></span>
             <span class="exp-date" data-i18n="exp_2_date">2020 – 2023</span>
           </div>
           <div class="exp-role" data-i18n="exp_2_role">Data Governance Engineer</div>
@@ -555,7 +557,7 @@ body{
         <div class="exp-card">
           <div class="exp-dot"></div>
           <div class="exp-header">
-            <span class="exp-company"><img src="Fotos/Banco Itaú Chile Logo.svg.webp" alt="Itaú" class="exp-logo exp-logo-itau">ITAÚ CHILE</span>
+            <span class="exp-company"><img src="Fotos/Banco Itaú Chile Logo.svg.webp" alt="Itaú" class="exp-logo exp-logo-itau"><span data-i18n="exp_3_company">ITAÚ CHILE</span></span>
             <span class="exp-date" data-i18n="exp_3_date">2017 – 2020</span>
           </div>
           <div class="exp-role" data-i18n="exp_3_role">Data Analyst</div>
@@ -655,12 +657,15 @@ const translations = {
     metric_3: "Atributos Clasificados",
     metric_4: "Años de Experiencia",
     section_experience: "💼 Experiencia Profesional",
+    exp_1_company: "TENPO",
     exp_1_date: "2023 – Junio 2026",
     exp_1_role: "Data Governance Lead",
     exp_1_list: "<li>Encabecé la estrategia corporativa de Gobierno de Datos para una organización financiera digital en transformación hacia banco regulado.</li><li>Construí la capacidad corporativa de Data Governance, definiendo estándares de gobierno, gestión de metadatos, controles de Data Quality y administración de activos críticos sobre <strong>más de 50 proyectos</strong> en Google Cloud Platform.</li><li>Definí e implementé el modelo operativo de <strong>Data Mesh</strong>, con dominios de datos, Data Owners, Data Stewards y estándares de gobierno para habilitar un modelo descentralizado.</li><li>Dirigí iniciativas estratégicas de Data Governance y cumplimiento regulatorio que viabilizaron la transformación de Tenpo hacia banco regulado, incluyendo preparación para la <strong>Ley 21.719</strong>.</li><li>Desarrollé una arquitectura de Data Governance sobre GCP que consolidó más de 50 proyectos, alcanzó <strong>cobertura sobre &gt;90% del Data Lake</strong>, eliminó un <strong>50% de datos deprecados</strong> y fortaleció calidad, trazabilidad y confiabilidad de la información.</li><li>Colaboré con equipos de Data Engineering para definir estándares técnicos de Data Governance en BigQuery, gestión de metadatos, Data Lineage y controles de Data Quality.</li>",
+    exp_2_company: "UBER",
     exp_2_date: "2020 – 2023",
     exp_2_role: "Data Governance Engineer",
     exp_2_list: "<li>Diseño e implementación de catálogo corporativo para <strong>más de 170 KPIs y 25 OKRs</strong>.</li><li>Implementación de modelos de control de acceso para <strong>más de 2.000 colaboradores</strong>.</li><li>Clasificación de privacidad para <strong>más de 1.400 atributos</strong> de información.</li><li>Homologación de <strong>más de 3.100 tablas y 12.000 campos</strong>.</li>",
+    exp_3_company: "ITAÚ CHILE",
     exp_3_date: "2017 – 2020",
     exp_3_role: "Data Analyst",
     exp_3_list: "<li>Participación en el marco corporativo de Gobierno de Datos.</li><li>Levantamiento de catálogos y ciclos de vida de información.</li><li>Definición de Data Owners y auditorías de procesos de datos.</li>",
@@ -702,12 +707,15 @@ const translations = {
     metric_3: "Attributes Classified",
     metric_4: "Years of Experience",
     section_experience: "💼 Professional Experience",
+    exp_1_company: "TENPO <span class='exp-company-desc'>Digital bank and fintech backed by Credicorp</span>",
     exp_1_date: "2023 – June 2026",
     exp_1_role: "Data Governance Lead",
     exp_1_list: "<li>Led the corporate Data Governance strategy for a leading digital financial institution during its transformation into a regulated bank.</li><li>Designed and implemented the corporate Data Governance capability, defining governance standards, metadata management, Data Quality controls, and critical data asset management across more than 50 Google Cloud Platform projects.</li><li>Designed and implemented the organization's Data Mesh operating model by defining data domains, Data Owners, Data Stewards, and governance standards to enable decentralized data ownership.</li><li>Led strategic Data Governance and regulatory compliance initiatives that supported Tenpo's transformation from a fintech into a regulated bank, including readiness for Chile's Personal Data Protection Law (Law 21.719).</li><li>Designed and implemented a Data Governance architecture on Google Cloud Platform that consolidated more than 50 projects, achieved over 90% Data Lake coverage, removed 50% of deprecated data, and improved data quality, traceability, and reliability.</li><li>Partnered with Data Engineering teams to define technical Data Governance standards for BigQuery, metadata management, Data Lineage, and Data Quality controls.</li>",
+    exp_2_company: "UBER <span class='exp-company-desc'>Global mobility and technology company</span>",
     exp_2_date: "2020 – 2023",
     exp_2_role: "Data Governance Engineer",
     exp_2_list: "<li>Designed and implemented an enterprise data catalog containing more than 170 KPIs and 25 OKRs.</li><li>Implemented data access control models for more than 2,000 internal users.</li><li>Implemented data privacy classification across more than 1,400 data attributes.</li><li>Standardized more than 3,100 tables and 12,000 data fields.</li>",
+    exp_3_company: "ITAÚ CHILE <span class='exp-company-desc'>Latin America's largest private bank</span>",
     exp_3_date: "2017 – 2020",
     exp_3_role: "Data Analyst",
     exp_3_list: "<li>Contributed to the implementation of the corporate Data Governance framework.</li><li>Developed information catalogs and performed data lifecycle assessments.</li><li>Defined Data Owners and conducted data governance process assessments.</li>",
