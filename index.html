@@ -121,6 +121,12 @@ body{
 .skill-bar{height:100%;border-radius:99px;background:var(--accent);transition:width .6s ease}
 .skill-bar.metric{background:var(--metric)}
 
+/* Segmented skill bars */
+.skill-segments{display:flex;gap:4px}
+.seg{flex:1;height:8px;border-radius:3px;background:var(--surface-alt);transition:background var(--transition)}
+.seg.filled{background:var(--accent)}
+.seg.filled.metric{background:var(--metric)}
+
 
 /* Languages */
 .lang{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem}
@@ -278,6 +284,8 @@ body{
   .exp-card{break-inside:avoid;page-break-inside:avoid;margin-bottom:.5rem}
   .exp-list{margin-top:.15rem}
   .skill-name,.skill-top{font-size:7pt}
+  .skill-segments{gap:3px}
+  .seg{height:6px}
   .avatar{width:100px;height:100px;border-width:2px}
   .main{height:auto!important}
   .card:last-child{flex:none!important}
@@ -339,52 +347,50 @@ body{
       <h3 data-i18n="skill_cat_dg">🏛️ Data Governance</h3>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">Governance</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar metric" style="width:95%"></div></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
       </div>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">Data Quality</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:90%"></div></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
       </div>
-
       <div class="skill">
         <div class="skill-top"><span class="skill-name">Metadata</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
       </div>
-
       <div class="skill">
         <div class="skill-top"><span class="skill-name">Data Privacy</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
       </div>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">Stewardship &amp; Ownership</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
       </div>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">Data Contracts</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:90%"></div></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
       </div>
     </div>
     <div class="skill-group">
       <h3 data-i18n="skill_cat_de">⚙️ Data Engineering &amp; Cloud</h3>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">SQL</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:90%"></div></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
       </div>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">Python/Pandas</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
       </div>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">ETL</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
       </div>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">GCP/BigQuery &amp; Cloud Storage</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
       </div>
       <div class="skill">
         <div class="skill-top"><span class="skill-name">Git/GitHub</span></div>
-        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
       </div>
 
     </div>
