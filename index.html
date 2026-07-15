@@ -129,9 +129,10 @@ body{
 
 
 /* Languages */
-.lang{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem}
+.lang{display:flex;align-items:center;gap:.4rem;margin-bottom:.35rem}
 .lang-name{font-size:.78rem;color:var(--text-secondary);width:70px;flex-shrink:0}
 .lang-bar-wrap{flex:1;height:4px;background:var(--surface-alt);border-radius:99px;overflow:hidden}
+.lang-level{font-size:.65rem;color:var(--text-muted);font-style:italic;white-space:nowrap}
 .lang-bar{height:100%;border-radius:99px;background:var(--metric)}
 
 .sidebar-bottom{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}
@@ -297,6 +298,7 @@ body{
   .lang{margin-bottom:.15rem;gap:.3rem}
   .lang-name{font-size:7pt;width:55px}
   .lang-bar-wrap{height:3px}
+  .lang-level{font-size:6pt}
   .metric-grid{break-inside:avoid;gap:.4rem;margin-bottom:.5rem}
   .skill-group{break-inside:avoid}
   .divider{break-inside:avoid}
@@ -401,10 +403,10 @@ body{
       <!-- Languages -->
       <div class="skill-group">
         <h3 data-i18n="section_languages">🌐 Idiomas</h3>
-        <div class="lang"><span class="lang-name" data-i18n="lang_es">Español · Nativo</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:100%"></div></div></div>
-        <div class="lang"><span class="lang-name" data-i18n="lang_en">Inglés · Avanzado</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:85%"></div></div></div>
-        <div class="lang"><span class="lang-name" data-i18n="lang_pt">Portugués · Intermedio</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:55%"></div></div></div>
-        <div class="lang"><span class="lang-name" data-i18n="lang_sign">L. Señas · Básico</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:30%"></div></div></div>
+        <div class="lang"><span class="lang-name" data-i18n="lang_es">Español</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:100%"></div></div><span class="lang-level" data-i18n="lang_level_es">Nativo</span></div>
+        <div class="lang"><span class="lang-name" data-i18n="lang_en">Inglés</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:85%"></div></div><span class="lang-level" data-i18n="lang_level_en">Avanzado</span></div>
+        <div class="lang"><span class="lang-name" data-i18n="lang_pt">Portugués</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:55%"></div></div><span class="lang-level" data-i18n="lang_level_pt">Intermedio</span></div>
+        <div class="lang"><span class="lang-name" data-i18n="lang_sign">L. Señas</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:30%"></div></div><span class="lang-level" data-i18n="lang_level_sign">Básico</span></div>
       </div>
 
       <div class="divider"></div>
@@ -591,10 +593,14 @@ const translations = {
   es: {
     sidebar_title: "Senior Data Governance Engineer<br>Data Mesh · Python · SQL · GCP",
     section_languages: "🌐 Idiomas",
-    lang_es: "Español · Nativo",
-    lang_en: "Inglés · Avanzado",
-    lang_pt: "Portugués · Intermedio",
-    lang_sign: "L. Señas · Básico",
+    lang_es: "Español",
+    lang_en: "Inglés",
+    lang_pt: "Portugués",
+    lang_sign: "L. Señas",
+    lang_level_es: "Nativo",
+    lang_level_en: "Avanzado",
+    lang_level_pt: "Intermedio",
+    lang_level_sign: "Básico",
     section_education: "🎓 Formación",
     edu_1_degree: "Ingeniero Civil Industrial",
     edu_1_school: "Pontificia Universidad Católica de Valparaíso",
@@ -634,10 +640,14 @@ const translations = {
   en: {
     sidebar_title: "Senior Data Governance Engineer<br>Data Mesh · Python · SQL · GCP",
     section_languages: "🌐 Languages",
-    lang_es: "Spanish · Native",
-    lang_en: "English · Advanced",
-    lang_pt: "Portuguese · Intermediate",
-    lang_sign: "Sign L. · Basic",
+    lang_es: "Spanish",
+    lang_en: "English",
+    lang_pt: "Portuguese",
+    lang_sign: "Sign L.",
+    lang_level_es: "Native",
+    lang_level_en: "Advanced",
+    lang_level_pt: "Intermediate",
+    lang_level_sign: "Basic",
     section_education: "🎓 Education",
     edu_1_degree: "Industrial Civil Engineer",
     edu_1_school: "Pontificia Universidad Católica de Valparaíso",
