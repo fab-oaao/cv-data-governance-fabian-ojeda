@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabián Ojeda Aguayo — Head de Data Governance</title>
+<style>
+/* ========== RESET & BASE ========== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#F8FAFC;
+  --surface:#FFFFFF;
+  --surface-alt:#F1F5F9;
+  --border:#E2E8F0;
+  --text:#0F172A;
+  --text-secondary:#475569;
+  --text-muted:#94A3B8;
+  --accent:#3B82F6;
+  --accent-hover:#2563EB;
+  --accent-subtle:#EFF6FF;
+  --metric:#10B981;
+  --metric-bg:#ECFDF5;
+  --tag-dg:#3B82F6;
+  --tag-dg-bg:#EFF6FF;
+  --tag-dp:#8B5CF6;
+  --tag-dp-bg:#F5F3FF;
+  --tag-de:#F59E0B;
+  --tag-de-bg:#FFFBEB;
+  --tag-cloud:#06B6D4;
+  --tag-cloud-bg:#ECFEFF;
+  --tag-lead:#EC4899;
+  --tag-lead-bg:#FDF2F8;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px -3px rgba(0,0,0,.08),0 4px 6px -4px rgba(0,0,0,.05);
+  --radius:12px;
+  --radius-sm:8px;
+  --transition:.2s ease;
+}
+
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#0F172A;
+    --surface:#1E293B;
+    --surface-alt:#334155;
+    --border:#334155;
+    --text:#F8FAFC;
+    --text-secondary:#94A3B8;
+    --text-muted:#64748B;
+    --accent:#60A5FA;
+    --accent-hover:#3B82F6;
+    --accent-subtle:#1E3A5F;
+    --metric:#34D399;
+    --metric-bg:#064E3B;
+    --tag-dg:#60A5FA;
+    --tag-dg-bg:#1E3A5F;
+    --tag-dp:#A78BFA;
+    --tag-dp-bg:#3B1F6E;
+    --tag-de:#FBBF24;
+    --tag-de-bg:#5C3D0E;
+    --tag-cloud:#22D3EE;
+    --tag-cloud-bg:#0B4D5A;
+    --tag-lead:#F472B6;
+    --tag-lead-bg:#4A1D35;
+    --shadow:0 1px 3px rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.2);
+    --shadow-lg:0 10px 15px -3px rgba(0,0,0,.4),0 4px 6px -4px rgba(0,0,0,.3);
+  }
+}
+
+html{font-size:16px}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  padding:2rem 1rem;
+  transition:background var(--transition),color var(--transition);
+  -webkit-font-smoothing:antialiased
+}
+
+/* ========== LAYOUT ========== */
+.container{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:1.5rem}
+.col-left{display:flex;flex-direction:column;gap:1rem}
+.col-left-bottom{flex:1;display:flex;flex-direction:column;gap:1rem}
+.col-right{display:flex;flex-direction:column;gap:2rem}
+.col-right-top{display:flex;flex-direction:column;gap:1.5rem}
+.col-right-bottom{flex:1;display:flex;flex-direction:column}
+.col-right-bottom .card{flex:1}
+@media(max-width:860px){
+  .container{display:flex;flex-direction:column;gap:1.5rem}
+  .col-left,.col-right{display:contents}
+  .col-left-top{order:1}
+  .col-right-top{order:2}
+  .col-left-bottom{order:3}
+  .col-right-bottom{order:4}
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:1.75rem;
+  display:flex;flex-direction:column
+}
+.avatar{
+  width:130px;height:130px;border-radius:50%;
+  margin:0 auto .75rem;overflow:hidden;
+  border:3px solid var(--accent);
+  box-shadow:var(--shadow-lg)
+}
+.avatar img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+.sidebar h1{font-size:1.25rem;text-align:center;margin-bottom:.25rem}
+.sidebar .title{
+  text-align:center;font-size:.8rem;color:var(--accent);font-weight:600;
+  margin-bottom:.25rem;line-height:1.4
+}
+.sidebar .subtitle{
+  text-align:center;font-size:.75rem;color:var(--text-secondary);font-weight:400;
+  margin-bottom:1.25rem;line-height:1.5;font-style:italic;letter-spacing:.02em
+}
+.divider{height:1px;background:var(--border);margin:1.25rem 0}
+
+/* Contact */
+.contact{display:flex;flex-direction:column;gap:.5rem}
+.contact-item{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--text-secondary)}
+.contact-item svg{flex-shrink:0;width:16px;height:16px;color:var(--accent)}
+
+/* Skills bars */
+.skill-group{margin-bottom:1.25rem}
+.skill-group:last-child{margin-bottom:0}
+.skill-group h3{
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--text-muted);margin-bottom:.6rem
+}
+.skill{display:flex;flex-direction:column;gap:.2rem;margin-bottom:.6rem}
+.skill:last-child{margin-bottom:0}
+.skill-top{display:flex;justify-content:space-between;align-items:center}
+.skill-name{font-size:.78rem;color:var(--text-secondary);font-weight:500}
+.skill-bar-wrap{height:6px;background:var(--surface-alt);border-radius:99px;overflow:hidden}
+.skill-bar{height:100%;border-radius:99px;background:var(--accent);transition:width .6s ease}
+.skill-bar.metric{background:var(--metric)}
+
+/* Segmented skill bars */
+.skill-segments{display:flex;gap:4px}
+.seg{flex:1;height:8px;border-radius:3px;background:var(--surface-alt);transition:background var(--transition)}
+.seg.filled{background:var(--accent)}
+.seg.filled.metric{background:var(--metric)}
+
+
+/* Languages */
+.lang{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.lang-name{font-size:.78rem;color:var(--text-secondary);width:70px;flex-shrink:0}
+.lang-bar-wrap{flex:1;height:4px;background:var(--surface-alt);border-radius:99px;overflow:hidden}
+.lang-level{font-size:.65rem;color:var(--text-muted);font-style:italic;white-space:nowrap}
+.lang-bar{height:100%;border-radius:99px;background:var(--metric)}
+
+/* Interest items */
+.interest-item{font-size:.78rem;color:var(--text-secondary);margin-bottom:.35rem;padding-left:.5rem;position:relative}
+.interest-item::before{content:'▸';position:absolute;left:0;color:var(--accent)}
+.interest-item:last-child{margin-bottom:0}
+
+/* ========== CARDS ========== */
+.card{flex-shrink:0}
+.card:last-child{flex:1}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:1.5rem;
+  transition:background var(--transition),border-color var(--transition),box-shadow var(--transition)
+}
+.card h2{
+  font-size:.9rem;font-weight:700;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.04em;
+  margin-bottom:1rem;display:flex;align-items:center;gap:.5rem
+}
+
+/* Profile Text */
+.profile-text{font-size:.88rem;color:var(--text-secondary);line-height:1.65;text-align:justify}
+
+/* Metric Cards */
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+@media(max-width:600px){.metric-grid{grid-template-columns:repeat(2,1fr)}}
+.metric-card{
+  background:var(--surface-alt);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:1rem;
+  text-align:center;
+  transition:background var(--transition),border-color var(--transition)
+}
+.metric-value{
+  font-size:1.5rem;font-weight:800;color:var(--metric);line-height:1.2
+}
+.metric-label{
+  font-size:.7rem;color:var(--text-muted);text-transform:uppercase;
+  letter-spacing:.03em;margin-top:.15rem
+}
+
+/* Value Proposition Grid */
+.value-prop-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.value-prop-grid{grid-template-columns:1fr}}
+.value-prop-card{
+  background:var(--surface-alt);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:1rem;
+  transition:background var(--transition),border-color var(--transition)
+}
+.value-prop-card h3{
+  font-size:.82rem;font-weight:700;color:var(--text);
+  margin-bottom:.4rem;line-height:1.3
+}
+.value-prop-card p{
+  font-size:.78rem;color:var(--text-secondary);line-height:1.55;
+  text-align:justify
+}
+
+/* Achievement list */
+.achievement-list{margin:0;padding:0;list-style:none}
+.achievement-list li{
+  font-size:.82rem;color:var(--text-secondary);line-height:1.6;
+  padding-left:1.2rem;position:relative;margin-bottom:.5rem;text-align:justify
+}
+.achievement-list li:last-child{margin-bottom:0}
+.achievement-list li::before{
+  content:'★';position:absolute;left:0;color:var(--accent);font-size:.7rem
+}
+
+/* Experience Timeline */
+.timeline{position:relative;padding-left:1.5rem}
+.timeline::before{
+  content:'';position:absolute;left:6px;top:4px;bottom:4px;
+  width:2px;background:var(--border)
+}
+.exp-card{position:relative;margin-bottom:1.25rem}
+.exp-card:last-child{margin-bottom:0}
+.exp-dot{
+  position:absolute;left:-1.5rem;top:6px;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--surface)
+}
+.exp-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;margin-bottom:.35rem}
+.exp-company{font-size:.88rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.5rem}
+.exp-company-desc{font-size:.72rem;font-weight:400;color:var(--text-muted);font-style:italic;margin-left:.25rem}
+.exp-logo{width:32px;height:32px;border-radius:6px;object-fit:contain;background:#fff;padding:3px;border:1px solid var(--border)}
+.exp-logo-tenpo{background:#000;border-color:#000}
+.exp-logo-itau{background:#FF6F00;border-color:#FF6F00}
+.exp-role{font-size:.78rem;color:var(--accent);font-weight:600;margin-bottom:.2rem}
+.exp-date{font-size:.72rem;color:var(--text-muted);font-weight:500}
+.exp-desc{
+  font-size:.8rem;color:var(--text-secondary);line-height:1.6;
+  margin-bottom:.6rem;text-align:justify
+}
+.exp-subsection-title{
+  font-size:.75rem;font-weight:700;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:.03em;
+  margin:.5rem 0 .3rem
+}
+.exp-list{margin:0;padding:0;list-style:none}
+.exp-list li{
+  font-size:.8rem;color:var(--text-secondary);line-height:1.6;
+  padding-left:1rem;position:relative;margin-bottom:.35rem;text-align:justify
+}
+.exp-list li::before{
+  content:'▸';position:absolute;left:0;color:var(--accent);font-size:.7rem
+}
+
+/* Tags */
+.tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.tag{
+  font-size:.72rem;font-weight:600;padding:.25rem .7rem;border-radius:99px;
+  letter-spacing:.01em
+}
+.tag-dg{background:var(--tag-dg-bg);color:var(--tag-dg)}
+.tag-dp{background:var(--tag-dp-bg);color:var(--tag-dp)}
+.tag-de{background:var(--tag-de-bg);color:var(--tag-de)}
+.tag-cloud{background:var(--tag-cloud-bg);color:var(--tag-cloud)}
+.tag-lead{background:var(--tag-lead-bg);color:var(--tag-lead)}
+
+/* Education & Diplomas */
+.edu-item{font-size:.82rem;margin-bottom:.75rem}
+.edu-item:last-child{margin-bottom:0}
+.edu-degree{font-weight:600;color:var(--text)}
+.edu-header{display:flex;align-items:center;gap:.5rem}
+.edu-logo{width:28px;height:28px;border-radius:3px;object-fit:contain}
+.edu-school{color:var(--text-secondary);font-size:.78rem}
+.edu-year{color:var(--text-muted);font-size:.72rem;display:block;margin-top:.1rem}
+
+/* Note text */
+.note-text{
+  font-size:.75rem;color:var(--text-muted);font-style:italic;
+  margin-top:.3rem;text-align:justify
+}
+
+/* ========== TOOLBAR ========== */
+.toolbar{
+  position:fixed;top:1rem;right:1rem;z-index:1000;
+  display:flex;gap:.5rem;align-items:center
+}
+.toolbar button{
+  background:var(--accent);color:#fff;border:none;
+  padding:.5rem 1rem;border-radius:var(--radius-sm);
+  font-size:.8rem;font-weight:600;cursor:pointer;
+  box-shadow:var(--shadow);transition:background var(--transition),transform var(--transition);
+  display:flex;align-items:center;gap:.35rem
+}
+.toolbar button:hover{background:var(--accent-hover);transform:translateY(-1px)}
+
+/* ========== PRINT ========== */
+@media print{
+  :root{
+    --bg:#FFFFFF;
+    --surface:#FFFFFF;
+    --surface-alt:#F8FAFC;
+    --border:#D1D5DB;
+    --text:#000000;
+    --text-secondary:#374151;
+    --text-muted:#6B7280;
+    --accent:#2563EB;
+    --accent-hover:#1D4ED8;
+    --accent-subtle:#EFF6FF;
+    --metric:#059669;
+    --metric-bg:#F0FDF4;
+    --tag-dg:#2563EB;
+    --tag-dg-bg:#EFF6FF;
+    --tag-dp:#7C3AED;
+    --tag-dp-bg:#F5F3FF;
+    --tag-de:#D97706;
+    --tag-de-bg:#FFFBEB;
+    --tag-cloud:#0891B2;
+    --tag-cloud-bg:#ECFEFF;
+    --tag-lead:#DB2777;
+    --tag-lead-bg:#FDF2F8;
+    --shadow:none;
+    --shadow-lg:none;
+  }
+  @page{size:A4;margin:.25in}
+  body{padding:0;background:#fff;font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .no-print{display:none!important}
+  .container{display:grid!important;grid-template-columns:210px 1fr!important;gap:.55rem!important;align-items:stretch}
+  .col-left{display:flex;flex-direction:column;gap:.35rem}
+  .col-right{display:flex;flex-direction:column;gap:.55rem}
+  .col-left-bottom{flex:1!important}
+  .col-right-top{display:flex;flex-direction:column;gap:.55rem!important}
+  .col-right-bottom{flex:1!important}
+  .sidebar{box-shadow:none;border:1px solid #D1D5DB;border-radius:6px;padding:.9rem 1rem}
+  .col-left-top.sidebar{padding:.6rem .8rem}
+  .sidebar h1{font-size:8.5pt;margin-bottom:.12rem}
+  .sidebar .title{font-size:6pt;margin-bottom:.1rem;line-height:1.35}
+  .sidebar .subtitle{font-size:5.5pt;margin-bottom:.2rem}
+  .avatar{width:48px;height:48px;border-width:2px;margin:0 auto .2rem}
+  .divider{margin:.25rem 0}
+  .contact{gap:.25rem;margin-bottom:.4rem}
+  .contact-item{font-size:.65rem}
+  .contact-item svg{width:13px;height:13px}
+  .card{box-shadow:none;border:1px solid #D1D5DB;border-radius:6px;padding:1rem 1.2rem}
+  .card h2{font-size:8pt;margin-bottom:.35rem}
+  .profile-text{font-size:7.5pt;text-align:justify;margin-bottom:.25rem;line-height:1.45}
+  .metric-grid{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:.3rem!important;margin:.3rem 0;break-inside:avoid}
+  .metric-card{padding:.3rem}
+  .metric-value{font-size:10pt}
+  .metric-label{font-size:5pt}
+  .value-prop-grid{grid-template-columns:1fr 1fr!important;gap:.3rem!important;break-inside:avoid}
+  .value-prop-card{padding:.3rem}
+  .value-prop-card h3{font-size:7pt;margin-bottom:.2rem}
+  .value-prop-card p{font-size:6.5pt;line-height:1.35}
+  .achievement-list li{font-size:6.5pt;line-height:1.35;text-align:justify}
+  .exp-company{font-size:7.5pt}
+  .exp-company-desc{font-size:6pt}
+  .exp-role,.exp-date{font-size:6pt}
+  .exp-desc{font-size:6.5pt;line-height:1.35;margin-bottom:.2rem}
+  .exp-subsection-title{font-size:6pt;margin:.18rem 0 .12rem}
+  .exp-list li{font-size:6.5pt;line-height:1.35;text-align:justify}
+  .exp-card{margin-bottom:.3rem}
+  .exp-card:last-child{margin-bottom:0}
+  .exp-list{margin-top:.08rem}
+  .exp-logo{width:16px;height:16px}
+  .exp-list li::before{content:none!important}
+  .note-text{display:none!important}
+  .skill-name,.skill-top{font-size:5.5pt}
+  .skill-segments{gap:2px}
+  .seg{height:3.5px;border-radius:1px;cursor:default}
+  .skill-group{break-inside:avoid;margin-bottom:.3rem}
+  .skill-group h3{font-size:5.5pt;margin-bottom:.18rem}
+  .skill{margin-bottom:.18rem}
+  .lang{margin-bottom:.08rem;gap:.15rem}
+  .lang-name{font-size:5.5pt;width:42px}
+  .lang-bar-wrap{height:2.5px;cursor:default}
+  .lang-level{font-size:4.5pt}
+  .interest-item{font-size:5.5pt;margin-bottom:.15rem}
+  .edu-logo{width:14px;height:14px;border-radius:2px;object-fit:contain}
+  .edu-item{font-size:6pt;margin-bottom:.25rem}
+  .edu-school{font-size:5.5pt}
+  .edu-year{font-size:5pt}
+  .edu-header{gap:.3rem}
+  .tags{gap:.15rem}
+  .tag{padding:.05rem .35rem;font-size:5.5pt}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button onclick="downloadPDF()">📄 Guardar como PDF</button>
+  <button onclick="toggleLang()" id="langBtn">🇺🇸 EN</button>
+</div>
+
+<div class="container">
+
+  <div class="col-left">
+    <section class="col-left-top sidebar">
+    <div class="avatar"><img src="Fotos/photo_cropped.jpg" alt="Fabián Ojeda Aguayo"></div>
+    <h1>Fabián Ojeda Aguayo</h1>
+    <div class="title" data-i18n="sidebar_role">Head de Data Governance<br>Data Management<br>Estrategia y Transformación de Datos</div>
+    <div class="subtitle" data-i18n="sidebar_subtitle">Liderando la transformación de Gobierno de Datos, equipos de alto desempeño y la adopción organizacional del dato</div>
+
+    <div class="divider"></div>
+
+    <div class="contact">
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>fabian.ojeda.aguayo@gmail.com</span>
+      </div>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>+56 9 6489 3456</span>
+      </div>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        <a href="https://www.linkedin.com/in/fabian-ojeda-aguayo" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">LinkedIn</a>
+      </div>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Santiago, Chile</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+  </section>
+    <section class="col-left-bottom sidebar">
+    <!-- Skills -->
+    <div class="skill-group">
+      <h3 data-i18n="skill_cat_dg">🏛️ Data Governance</h3>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Estrategia de Data Governance</span></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Data Quality</span></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Metadata Management</span></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Data Privacy</span></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Data Contracts</span></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Data Mesh</span></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Access Governance</span></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Stewardship &amp; Ownership</span></div>
+        <div class="skill-segments"><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span><span class="seg filled metric"></span></div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h3 data-i18n="skill_cat_dm">⚙️ Data Management &amp; Cloud</h3>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">SQL</span></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Python</span></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">GCP / BigQuery</span></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Microsoft Azure</span></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Looker</span></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Dataform</span></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Git &amp; GitHub</span></div>
+        <div class="skill-segments"><span class="seg filled"></span><span class="seg filled"></span><span class="seg filled"></span><span class="seg"></span></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+      <!-- Languages -->
+      <div class="skill-group">
+        <h3 data-i18n="section_languages">🌐 Idiomas</h3>
+        <div class="lang"><span class="lang-name" data-i18n="lang_es">Español</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:100%"></div></div><span class="lang-level" data-i18n="lang_level_es">Nativo</span></div>
+        <div class="lang"><span class="lang-name" data-i18n="lang_en">Inglés</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:85%"></div></div><span class="lang-level" data-i18n="lang_level_en">Avanzado</span></div>
+        <div class="lang"><span class="lang-name" data-i18n="lang_pt">Portugués</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:55%"></div></div><span class="lang-level" data-i18n="lang_level_pt">Intermedio</span></div>
+        <div class="lang"><span class="lang-name" data-i18n="lang_sign">L. Señas</span><div class="lang-bar-wrap"><div class="lang-bar" style="width:30%"></div></div><span class="lang-level" data-i18n="lang_level_sign">Básico</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Education -->
+      <div class="skill-group">
+        <h3 data-i18n="section_education">🎓 Formación</h3>
+        <div class="edu-item">
+          <div class="edu-header"><img src="Fotos/Pontificia Universidad Católica de Valparaíso Logo.svg" alt="PUCV" class="edu-logo"><span class="edu-degree" data-i18n="edu_1_degree">Ingeniero Civil Industrial</span></div>
+          <div class="edu-school" data-i18n="edu_1_school">Pontificia Universidad Católica de Valparaíso</div>
+          <div class="edu-year">2010 – 2016</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-header"><img src="Fotos/University of Calgary Logo.png" alt="UofC" class="edu-logo"><span class="edu-degree" data-i18n="edu_2_degree">Intercambio Académico</span></div>
+          <div class="edu-school" data-i18n="edu_2_school">University of Calgary, Canadá</div>
+          <div class="edu-year">2014</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Diplomas -->
+      <div class="skill-group">
+        <h3 data-i18n="section_diplomas">📜 Diplomados</h3>
+        <div class="edu-item">
+          <div class="edu-header"><img src="Fotos/Pontificia Universidad Católica de Chile Logo.png" alt="PUC" class="edu-logo"><span class="edu-degree" data-i18n="dip_1_degree">Protección de Datos Personales</span></div>
+          <div class="edu-school">Pontificia Universidad Católica de Chile</div>
+          <div class="edu-year">2026</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-header"><img src="Fotos/Pontificia Universidad Católica de Chile Logo.png" alt="PUC" class="edu-logo"><span class="edu-degree" data-i18n="dip_2_degree">Liderazgo y Transformación Digital</span></div>
+          <div class="edu-school">Pontificia Universidad Católica de Chile</div>
+          <div class="edu-year">2021</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-header"><img src="Fotos/Universidad de Chile Logo.png" alt="UChile" class="edu-logo"><span class="edu-degree" data-i18n="dip_3_degree">Business Intelligence</span></div>
+          <div class="edu-school" data-i18n="dip_3_school">Universidad de Chile</div>
+          <div class="edu-year">2018</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Other Interests -->
+      <div class="skill-group">
+        <h3 data-i18n="section_interests">🎯 Otras áreas de interés</h3>
+        <div class="interest-item">Certificación Internacional de Bartender — 2024</div>
+        <div class="interest-item">Certificación en Fotografía — 2026</div>
+      </div>
+  </section>
+  </div>
+
+  <div class="col-right">
+    <section class="col-right-top">
+    <!-- Professional Profile -->
+    <section class="card">
+      <h2 data-i18n="section_profile">👤 Perfil Profesional</h2>
+      <p class="profile-text" data-i18n="profile_text">
+        Ingeniero Civil Industrial con más de <strong>9 años</strong> de experiencia liderando iniciativas de Gobierno de Datos en banca, fintech y tecnología. Especializado en diseñar e implementar capacidades de Data Governance que permiten a las organizaciones utilizar sus datos de forma confiable, escalable y alineada con los objetivos del negocio y las exigencias regulatorias.
+      </p>
+      <p class="profile-text" style="margin-top:.5rem" data-i18n="profile_text_2">
+        He liderado la construcción de áreas de Gobierno de Datos desde cero, definiendo modelos operativos, políticas, estándares y procesos basados en <strong>Data Mesh</strong> y <strong>Data Contracts</strong>. He formado equipos de alto desempeño e impulsado la implementación de iniciativas de Data Quality, Metadata, Access Governance, Privacidad y Gestión del Ciclo de Vida del Dato. Además, lideré el diseño de una plataforma de Gobierno de Datos basada en Data Contracts, habilitando el gobierno de más de <strong>28.000 activos de datos</strong> en entornos Cloud (GCP y Azure).
+      </p>
+      <p class="profile-text" style="margin-top:.5rem" data-i18n="profile_text_3">
+        Creo en un Gobierno de Datos que habilita al negocio en lugar de burocratizarlo. Mi liderazgo se basa en desarrollar personas, fortalecer el rol de los Data Owners y construir capacidades organizacionales que permitan a las empresas utilizar sus datos con confianza, autonomía y responsabilidad.
+      </p>
+    </section>
+
+    <!-- Metrics -->
+    <section class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value">28.000+</div>
+        <div class="metric-label" data-i18n="metric_1">Activos de Datos Gobernados</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">2.000+</div>
+        <div class="metric-label" data-i18n="metric_2">Data Contracts Implementados</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">~3.000</div>
+        <div class="metric-label" data-i18n="metric_3">Tablas con RBAC</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">9+</div>
+        <div class="metric-label" data-i18n="metric_4">Años de Experiencia</div>
+      </div>
+    </section>
+
+    <!-- Value Proposition -->
+    <section class="card">
+      <h2 data-i18n="section_value_prop">💡 Propuesta de Valor</h2>
+      <div class="value-prop-grid">
+        <div class="value-prop-card">
+          <h3 data-i18n="vp_1_title">Construcción de capacidades organizacionales</h3>
+          <p data-i18n="vp_1_desc">Diseño e implemento modelos de Gobierno de Datos desde su concepción hasta su adopción organizacional, creando estructuras, procesos, estándares y equipos que permiten escalar el uso confiable de los datos.</p>
+        </div>
+        <div class="value-prop-card">
+          <h3 data-i18n="vp_2_title">Liderazgo y desarrollo de equipos</h3>
+          <p data-i18n="vp_2_desc">Formo equipos de alto desempeño promoviendo autonomía, pensamiento estratégico y crecimiento profesional, construyendo culturas de colaboración entre negocio y tecnología.</p>
+        </div>
+        <div class="value-prop-card">
+          <h3 data-i18n="vp_3_title">Gobierno de Datos orientado al negocio</h3>
+          <p data-i18n="vp_3_desc">Diseño modelos de gobierno que equilibran control, cumplimiento normativo y velocidad de ejecución, fortaleciendo el rol de los Data Owners y evitando la burocracia innecesaria.</p>
+        </div>
+        <div class="value-prop-card">
+          <h3 data-i18n="vp_4_title">Transformación mediante arquitectura y automatización</h3>
+          <p data-i18n="vp_4_desc">Impulso iniciativas de Data Mesh, Data Contracts y plataformas de Gobierno de Datos que automatizan procesos, incrementan la calidad de la información y habilitan ecosistemas escalables.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Achievements -->
+    <section class="card">
+      <h2 data-i18n="section_achievements">🏆 Logros Destacados</h2>
+      <ul class="achievement-list" data-i18n="achievement_list">
+        <li>Construí desde cero la función de Data Governance en Tenpo, definiendo la estrategia, el modelo operativo, las políticas y los estándares corporativos.</li>
+        <li>Diseñé e implementé un modelo de Gobierno de Datos basado en Data Mesh y Data Contracts, utilizado para gobernar más de <strong>28.000 activos de datos</strong>.</li>
+        <li>Lideré la creación de una plataforma interna de Gobierno de Datos que integró Data Contracts, Metadata, Data Catalog, Business Glossary y Data Quality.</li>
+        <li>Formé y desarrollé un equipo de <strong>4 Data Governance Engineers</strong>, estableciendo metodologías de trabajo, mentoría y crecimiento profesional.</li>
+        <li>Implementé un modelo corporativo de Access Governance que permitió gobernar aproximadamente <strong>3.000 tablas</strong> mediante RBAC, Data Owners y flujos de aprobación.</li>
+        <li>Impulsé la implementación de iniciativas estratégicas relacionadas con Data Quality, Metadata, Privacidad, Retención, Inventario de Datos y cumplimiento de la <strong>Ley N.º 21.719</strong>.</li>
+        <li>Lideré iniciativas de optimización del ecosistema de datos que permitieron retirar aproximadamente <strong>12.000 tablas obsoletas</strong>, mejorando la gobernanza y reduciendo la complejidad operativa.</li>
+        <li>Presenté periódicamente el avance de la estrategia de Gobierno de Datos al Comité Ejecutivo, alineando iniciativas con líderes de negocio, tecnología, riesgo, cumplimiento y operaciones.</li>
+      </ul>
+    </section>
+
+    <!-- Experience -->
+    <section class="card">
+      <h2 data-i18n="section_experience">💼 Experiencia Profesional</h2>
+      <div class="timeline">
+
+        <div class="exp-card">
+          <div class="exp-dot" style="background:var(--metric)"></div>
+          <div class="exp-header">
+            <span class="exp-company"><img src="Fotos/Tenpo Logo.webp" alt="Tenpo" class="exp-logo exp-logo-tenpo"><span data-i18n="exp_1_company">TENPO</span></span>
+            <span class="exp-date" data-i18n="exp_1_date">Octubre 2023 – Junio 2026</span>
+          </div>
+          <div class="exp-role" data-i18n="exp_1_role">Data Governance Lead</div>
+          <div class="exp-desc" data-i18n="exp_1_desc">
+            Responsable de definir e implementar la estrategia corporativa de Gobierno de Datos en una organización en proceso de transformación hacia banco, liderando la creación de la función de Data Governance, el desarrollo del equipo especializado y la implementación de capacidades organizacionales para la gestión integral del dato.
+          </div>
+
+          <div class="exp-subsection-title" data-i18n="exp_1_resp_title">Principales responsabilidades</div>
+          <ul class="exp-list" data-i18n="exp_1_resp_list">
+            <li>Diseñar e implementar la estrategia corporativa de Gobierno de Datos.</li>
+            <li>Definir el modelo operativo de Data Governance basado en Data Mesh.</li>
+            <li>Diseñar políticas, estándares y frameworks de Gobierno de Datos.</li>
+            <li>Liderar un equipo de Data Governance Engineers.</li>
+            <li>Definir y fortalecer los roles de Data Owners, Data Stewards y Data Custodians.</li>
+            <li>Liderar iniciativas de Data Quality, Metadata, Access Governance y Data Catalog.</li>
+            <li>Diseñar la estrategia de cumplimiento de la Ley de Protección de Datos Personales.</li>
+            <li>Liderar la implementación de Data Contracts como mecanismo central de gobierno.</li>
+            <li>Presentar avances e iniciativas al Comité Ejecutivo.</li>
+            <li>Coordinar iniciativas transversales con Tecnología, Riesgo, Legal, Compliance, Finanzas, Operaciones y Producto.</li>
+          </ul>
+
+          <div class="exp-subsection-title" data-i18n="exp_1_achiev_title">Principales logros</div>
+          <ul class="exp-list" data-i18n="exp_1_achiev_list">
+            <li>Construcción completa del área de Data Governance desde cero.</li>
+            <li>Diseño del modelo operativo de Gobierno de Datos.</li>
+            <li>Implementación de aproximadamente <strong>2.000 Data Contracts</strong>.</li>
+            <li>Gobierno de más de <strong>28.000 activos de datos</strong> distribuidos en GCP y Azure.</li>
+            <li>Implementación de un modelo RBAC para aproximadamente <strong>3.000 tablas</strong>.</li>
+            <li>Diseño de una plataforma integrada de Gobierno de Datos basada en Data Contracts.</li>
+            <li>Formación y desarrollo de un equipo especializado de cuatro Data Governance Engineers.</li>
+            <li>Eliminación de aproximadamente <strong>12.000 tablas obsoletas</strong>, optimizando el ecosistema de datos.</li>
+            <li>Implementación de procesos de Gobierno de Datos utilizados por alrededor de <strong>30 áreas de negocio</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-dot"></div>
+          <div class="exp-header">
+            <span class="exp-company"><img src="Fotos/Uber Logo.png" alt="Uber" class="exp-logo"><span data-i18n="exp_2_company">UBER</span></span>
+            <span class="exp-date" data-i18n="exp_2_date">Octubre 2020 – Septiembre 2023</span>
+          </div>
+          <div class="exp-role" data-i18n="exp_2_role">Data Governance Specialist</div>
+          <div class="exp-desc" data-i18n="exp_2_desc">
+            Responsable de fortalecer las capacidades de Gobierno de Datos para Latinoamérica, promoviendo estándares de calidad, documentación y gestión de metadatos, además de apoyar iniciativas globales de mejora en la administración de activos de datos.
+          </div>
+
+          <div class="exp-subsection-title" data-i18n="exp_2_resp_title">Principales responsabilidades y logros</div>
+          <ul class="exp-list" data-i18n="exp_2_list">
+            <li>Implementación de estándares de Gobierno de Datos para equipos regionales.</li>
+            <li>Gestión y mejora de metadatos y documentación de activos de datos.</li>
+            <li>Definición y seguimiento de indicadores de calidad de datos.</li>
+            <li>Colaboración con equipos multidisciplinarios distribuidos globalmente.</li>
+            <li>Participación en iniciativas de mejora continua de procesos de Data Management.</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-dot"></div>
+          <div class="exp-header">
+            <span class="exp-company"><img src="Fotos/Banco Itaú Chile Logo.svg.webp" alt="Itaú" class="exp-logo exp-logo-itau"><span data-i18n="exp_3_company">ITAÚ CHILE</span></span>
+            <span class="exp-date" data-i18n="exp_3_date">Diciembre 2016 – Septiembre 2020</span>
+          </div>
+          <div class="exp-role" data-i18n="exp_3_role">Data Governance Analyst</div>
+          <div class="exp-desc" data-i18n="exp_3_desc">
+            Participé en la implementación y fortalecimiento de prácticas de Gobierno de Datos, apoyando iniciativas relacionadas con calidad de datos, gestión de metadatos, documentación y cumplimiento regulatorio dentro de la organización.
+          </div>
+
+          <div class="exp-subsection-title" data-i18n="exp_3_resp_title">Principales responsabilidades y logros</div>
+          <ul class="exp-list" data-i18n="exp_3_list">
+            <li>Apoyo en iniciativas corporativas de Gobierno de Datos.</li>
+            <li>Gestión de calidad de datos y documentación funcional.</li>
+            <li>Definición y mantenimiento de metadatos.</li>
+            <li>Colaboración con áreas de negocio y tecnología.</li>
+            <li>Participación en proyectos regulatorios y de transformación de datos.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+  </section>
+    <section class="col-right-bottom">
+    <section class="card">
+      <h2 data-i18n="section_competencies">🛠️ Competencias y tecnologías</h2>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <div>
+          <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.3rem;font-weight:600" data-i18n="comp_cat_dg">🏛️ Data Governance</div>
+          <div class="tags">
+            <span class="tag tag-dg">Data Governance</span>
+            <span class="tag tag-dg">Data Management</span>
+            <span class="tag tag-dg">Data Strategy</span>
+            <span class="tag tag-dg">Data Mesh</span>
+            <span class="tag tag-dg">Data Contracts</span>
+            <span class="tag tag-dg">Data Quality</span>
+            <span class="tag tag-dg">Metadata Management</span>
+            <span class="tag tag-dg">Data Catalog</span>
+            <span class="tag tag-dg">Business Glossary</span>
+            <span class="tag tag-dg">Data Lineage</span>
+            <span class="tag tag-dg">Master Data Management</span>
+            <span class="tag tag-dg">Access Governance</span>
+            <span class="tag tag-dg">Data Privacy</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.3rem;font-weight:600" data-i18n="comp_cat_lead">👥 Liderazgo &amp; Gestión</div>
+          <div class="tags">
+            <span class="tag tag-lead">Gestión del Cambio</span>
+            <span class="tag tag-lead">Liderazgo de Equipos</span>
+            <span class="tag tag-lead">Transformación Organizacional</span>
+            <span class="tag tag-lead">Gobierno Corporativo de Datos</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.3rem;font-weight:600" data-i18n="comp_cat_cloud">☁️ Tecnologías &amp; Herramientas</div>
+          <div class="tags">
+            <span class="tag tag-cloud">Google Cloud Platform</span>
+            <span class="tag tag-cloud">BigQuery</span>
+            <span class="tag tag-cloud">Cloud Storage</span>
+            <span class="tag tag-cloud">IAM</span>
+            <span class="tag tag-cloud">Firestore</span>
+            <span class="tag tag-cloud">Microsoft Azure</span>
+            <span class="tag tag-cloud">SQL</span>
+            <span class="tag tag-cloud">Python</span>
+            <span class="tag tag-cloud">Looker</span>
+            <span class="tag tag-cloud">Dataform</span>
+            <span class="tag tag-cloud">Git &amp; GitHub</span>
+            <span class="tag tag-cloud">Jira</span>
+            <span class="tag tag-cloud">Confluence</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+  </div>
+
+</div>
+
+<script>
+const translations = {
+  es: {
+    sidebar_role: "Head de Data Governance<br>Data Management<br>Estrategia y Transformación de Datos",
+    sidebar_subtitle: "Liderando la transformación de Gobierno de Datos, equipos de alto desempeño y la adopción organizacional del dato",
+    section_languages: "🌐 Idiomas",
+    lang_es: "Español",
+    lang_en: "Inglés",
+    lang_pt: "Portugués",
+    lang_sign: "L. Señas",
+    lang_level_es: "Nativo",
+    lang_level_en: "Avanzado",
+    lang_level_pt: "Intermedio",
+    lang_level_sign: "Básico",
+    section_education: "🎓 Formación",
+    edu_1_degree: "Ingeniero Civil Industrial",
+    edu_1_school: "Pontificia Universidad Católica de Valparaíso",
+    edu_2_degree: "Intercambio Académico",
+    edu_2_school: "University of Calgary, Canadá",
+    section_diplomas: "📜 Diplomados",
+    dip_1_degree: "Protección de Datos Personales",
+    dip_1_school: "Pontificia Universidad Católica de Chile",
+    dip_2_degree: "Liderazgo y Transformación Digital",
+    dip_2_school: "Pontificia Universidad Católica de Chile",
+    dip_3_degree: "Business Intelligence",
+    dip_3_school: "Universidad de Chile",
+    section_interests: "🎯 Otras áreas de interés",
+    section_profile: "👤 Perfil Profesional",
+    profile_text: "Ingeniero Civil Industrial con más de <strong>9 años</strong> de experiencia liderando iniciativas de Gobierno de Datos en banca, fintech y tecnología. Especializado en diseñar e implementar capacidades de Data Governance que permiten a las organizaciones utilizar sus datos de forma confiable, escalable y alineada con los objetivos del negocio y las exigencias regulatorias.",
+    profile_text_2: "He liderado la construcción de áreas de Gobierno de Datos desde cero, definiendo modelos operativos, políticas, estándares y procesos basados en <strong>Data Mesh</strong> y <strong>Data Contracts</strong>. He formado equipos de alto desempeño e impulsado la implementación de iniciativas de Data Quality, Metadata, Access Governance, Privacidad y Gestión del Ciclo de Vida del Dato. Además, lideré el diseño de una plataforma de Gobierno de Datos basada en Data Contracts, habilitando el gobierno de más de <strong>28.000 activos de datos</strong> en entornos Cloud (GCP y Azure).",
+    profile_text_3: "Creo en un Gobierno de Datos que habilita al negocio en lugar de burocratizarlo. Mi liderazgo se basa en desarrollar personas, fortalecer el rol de los Data Owners y construir capacidades organizacionales que permitan a las empresas utilizar sus datos con confianza, autonomía y responsabilidad.",
+    metric_1: "Activos de Datos Gobernados",
+    metric_2: "Data Contracts Implementados",
+    metric_3: "Tablas con RBAC",
+    metric_4: "Años de Experiencia",
+    section_value_prop: "💡 Propuesta de Valor",
+    vp_1_title: "Construcción de capacidades organizacionales",
+    vp_1_desc: "Diseño e implemento modelos de Gobierno de Datos desde su concepción hasta su adopción organizacional, creando estructuras, procesos, estándares y equipos que permiten escalar el uso confiable de los datos.",
+    vp_2_title: "Liderazgo y desarrollo de equipos",
+    vp_2_desc: "Formo equipos de alto desempeño promoviendo autonomía, pensamiento estratégico y crecimiento profesional, construyendo culturas de colaboración entre negocio y tecnología.",
+    vp_3_title: "Gobierno de Datos orientado al negocio",
+    vp_3_desc: "Diseño modelos de gobierno que equilibran control, cumplimiento normativo y velocidad de ejecución, fortaleciendo el rol de los Data Owners y evitando la burocracia innecesaria.",
+    vp_4_title: "Transformación mediante arquitectura y automatización",
+    vp_4_desc: "Impulso iniciativas de Data Mesh, Data Contracts y plataformas de Gobierno de Datos que automatizan procesos, incrementan la calidad de la información y habilitan ecosistemas escalables.",
+    section_achievements: "🏆 Logros Destacados",
+    achievement_list: "<li>Construí desde cero la función de Data Governance en Tenpo, definiendo la estrategia, el modelo operativo, las políticas y los estándares corporativos.</li><li>Diseñé e implementé un modelo de Gobierno de Datos basado en Data Mesh y Data Contracts, utilizado para gobernar más de <strong>28.000 activos de datos</strong>.</li><li>Lideré la creación de una plataforma interna de Gobierno de Datos que integró Data Contracts, Metadata, Data Catalog, Business Glossary y Data Quality.</li><li>Formé y desarrollé un equipo de <strong>4 Data Governance Engineers</strong>, estableciendo metodologías de trabajo, mentoría y crecimiento profesional.</li><li>Implementé un modelo corporativo de Access Governance que permitió gobernar aproximadamente <strong>3.000 tablas</strong> mediante RBAC, Data Owners y flujos de aprobación.</li><li>Impulsé la implementación de iniciativas estratégicas relacionadas con Data Quality, Metadata, Privacidad, Retención, Inventario de Datos y cumplimiento de la <strong>Ley N.º 21.719</strong>.</li><li>Lideré iniciativas de optimización del ecosistema de datos que permitieron retirar aproximadamente <strong>12.000 tablas obsoletas</strong>, mejorando la gobernanza y reduciendo la complejidad operativa.</li><li>Presenté periódicamente el avance de la estrategia de Gobierno de Datos al Comité Ejecutivo, alineando iniciativas con líderes de negocio, tecnología, riesgo, cumplimiento y operaciones.</li>",
+    section_experience: "💼 Experiencia Profesional",
+    exp_1_company: "TENPO",
+    exp_1_date: "Octubre 2023 – Junio 2026",
+    exp_1_role: "Data Governance Lead",
+    exp_1_desc: "Responsable de definir e implementar la estrategia corporativa de Gobierno de Datos en una organización en proceso de transformación hacia banco, liderando la creación de la función de Data Governance, el desarrollo del equipo especializado y la implementación de capacidades organizacionales para la gestión integral del dato.",
+    exp_1_resp_title: "Principales responsabilidades",
+    exp_1_resp_list: "<li>Diseñar e implementar la estrategia corporativa de Gobierno de Datos.</li><li>Definir el modelo operativo de Data Governance basado en Data Mesh.</li><li>Diseñar políticas, estándares y frameworks de Gobierno de Datos.</li><li>Liderar un equipo de Data Governance Engineers.</li><li>Definir y fortalecer los roles de Data Owners, Data Stewards y Data Custodians.</li><li>Liderar iniciativas de Data Quality, Metadata, Access Governance y Data Catalog.</li><li>Diseñar la estrategia de cumplimiento de la Ley de Protección de Datos Personales.</li><li>Liderar la implementación de Data Contracts como mecanismo central de gobierno.</li><li>Presentar avances e iniciativas al Comité Ejecutivo.</li><li>Coordinar iniciativas transversales con Tecnología, Riesgo, Legal, Compliance, Finanzas, Operaciones y Producto.</li>",
+    exp_1_achiev_title: "Principales logros",
+    exp_1_achiev_list: "<li>Construcción completa del área de Data Governance desde cero.</li><li>Diseño del modelo operativo de Gobierno de Datos.</li><li>Implementación de aproximadamente <strong>2.000 Data Contracts</strong>.</li><li>Gobierno de más de <strong>28.000 activos de datos</strong> distribuidos en GCP y Azure.</li><li>Implementación de un modelo RBAC para aproximadamente <strong>3.000 tablas</strong>.</li><li>Diseño de una plataforma integrada de Gobierno de Datos basada en Data Contracts.</li><li>Formación y desarrollo de un equipo especializado de cuatro Data Governance Engineers.</li><li>Eliminación de aproximadamente <strong>12.000 tablas obsoletas</strong>, optimizando el ecosistema de datos.</li><li>Implementación de procesos de Gobierno de Datos utilizados por alrededor de <strong>30 áreas de negocio</strong>.</li>",
+    exp_2_company: "UBER",
+    exp_2_date: "Octubre 2020 – Septiembre 2023",
+    exp_2_role: "Data Governance Specialist",
+    exp_2_desc: "Responsable de fortalecer las capacidades de Gobierno de Datos para Latinoamérica, promoviendo estándares de calidad, documentación y gestión de metadatos, además de apoyar iniciativas globales de mejora en la administración de activos de datos.",
+    exp_2_resp_title: "Principales responsabilidades y logros",
+    exp_2_list: "<li>Implementación de estándares de Gobierno de Datos para equipos regionales.</li><li>Gestión y mejora de metadatos y documentación de activos de datos.</li><li>Definición y seguimiento de indicadores de calidad de datos.</li><li>Colaboración con equipos multidisciplinarios distribuidos globalmente.</li><li>Participación en iniciativas de mejora continua de procesos de Data Management.</li>",
+    exp_3_company: "ITAÚ CHILE",
+    exp_3_date: "Diciembre 2016 – Septiembre 2020",
+    exp_3_role: "Data Governance Analyst",
+    exp_3_desc: "Participé en la implementación y fortalecimiento de prácticas de Gobierno de Datos, apoyando iniciativas relacionadas con calidad de datos, gestión de metadatos, documentación y cumplimiento regulatorio dentro de la organización.",
+    exp_3_resp_title: "Principales responsabilidades y logros",
+    exp_3_list: "<li>Apoyo en iniciativas corporativas de Gobierno de Datos.</li><li>Gestión de calidad de datos y documentación funcional.</li><li>Definición y mantenimiento de metadatos.</li><li>Colaboración con áreas de negocio y tecnología.</li><li>Participación en proyectos regulatorios y de transformación de datos.</li>",
+    section_competencies: "🛠️ Competencias y tecnologías",
+    comp_cat_dg: "🏛️ Data Governance",
+    comp_cat_lead: "👥 Liderazgo & Gestión",
+    comp_cat_cloud: "☁️ Tecnologías & Herramientas",
+    btn_pdf: "📄 Guardar como PDF",
+    btn_lang: "🇺🇸 EN"
+  },
+  en: {
+    sidebar_role: "Head of Data Governance<br>Data Management<br>Data Strategy & Transformation",
+    sidebar_subtitle: "Leading Data Governance transformation, high-performance teams, and organizational data adoption",
+    section_languages: "🌐 Languages",
+    lang_es: "Spanish",
+    lang_en: "English",
+    lang_pt: "Portuguese",
+    lang_sign: "Sign L.",
+    lang_level_es: "Native",
+    lang_level_en: "Advanced",
+    lang_level_pt: "Intermediate",
+    lang_level_sign: "Basic",
+    section_education: "🎓 Education",
+    edu_1_degree: "Industrial Engineer",
+    edu_1_school: "Pontificia Universidad Católica de Valparaíso",
+    edu_2_degree: "International Exchange Program",
+    edu_2_school: "University of Calgary, Canada",
+    section_diplomas: "📜 Diplomas",
+    dip_1_degree: "Data Protection",
+    dip_1_school: "Pontificia Universidad Católica de Chile",
+    dip_2_degree: "Leadership & Digital Transformation",
+    dip_2_school: "Pontificia Universidad Católica de Chile",
+    dip_3_degree: "Business Intelligence",
+    dip_3_school: "Universidad de Chile",
+    section_interests: "🎯 Other Areas of Interest",
+    section_profile: "👤 Professional Profile",
+    profile_text: "Industrial Engineer with over <strong>9 years</strong> of experience leading Data Governance initiatives in banking, fintech, and technology. Specialized in designing and implementing Data Governance capabilities that enable organizations to use their data reliably, scalably, and aligned with business objectives and regulatory requirements.",
+    profile_text_2: "I have built Data Governance organizations from scratch, defining operating models, policies, standards, and processes based on <strong>Data Mesh</strong> and <strong>Data Contracts</strong>. I have formed high-performance teams and driven the implementation of Data Quality, Metadata, Access Governance, Privacy, and Data Lifecycle Management initiatives. Additionally, I led the design of a Data Governance platform based on Data Contracts, enabling the governance of more than <strong>28,000 data assets</strong> in Cloud environments (GCP and Azure).",
+    profile_text_3: "I believe in Data Governance that enables the business rather than bureaucratizing it. My leadership is based on developing people, strengthening the role of Data Owners, and building organizational capabilities that allow companies to use their data with confidence, autonomy, and responsibility.",
+    metric_1: "Data Assets Governed",
+    metric_2: "Data Contracts Implemented",
+    metric_3: "Tables with RBAC",
+    metric_4: "Years of Experience",
+    section_value_prop: "💡 Value Proposition",
+    vp_1_title: "Organizational Capability Building",
+    vp_1_desc: "I design and implement Data Governance models from conception to organizational adoption, creating structures, processes, standards, and teams that enable scalable and trustworthy data usage.",
+    vp_2_title: "Team Leadership & Development",
+    vp_2_desc: "I build high-performance teams by promoting autonomy, strategic thinking, and professional growth, fostering cultures of collaboration between business and technology.",
+    vp_3_title: "Business-Driven Data Governance",
+    vp_3_desc: "I design governance models that balance control, regulatory compliance, and execution speed, strengthening the role of Data Owners while avoiding unnecessary bureaucracy.",
+    vp_4_title: "Transformation Through Architecture & Automation",
+    vp_4_desc: "I drive Data Mesh, Data Contracts, and Data Governance platform initiatives that automate processes, increase information quality, and enable scalable ecosystems.",
+    section_achievements: "🏆 Key Achievements",
+    achievement_list: "<li>Built the Data Governance function from scratch at Tenpo, defining strategy, operating model, policies, and corporate standards.</li><li>Designed and implemented a Data Governance model based on Data Mesh and Data Contracts, used to govern more than <strong>28,000 data assets</strong>.</li><li>Led the creation of an internal Data Governance platform integrating Data Contracts, Metadata, Data Catalog, Business Glossary, and Data Quality.</li><li>Built and developed a team of <strong>4 Data Governance Engineers</strong>, establishing work methodologies, mentoring, and professional growth.</li><li>Implemented a corporate Access Governance model governing approximately <strong>3,000 tables</strong> through RBAC, Data Owners, and approval workflows.</li><li>Drove strategic initiatives related to Data Quality, Metadata, Privacy, Retention, Data Inventory, and compliance with <strong>Law No. 21,719</strong>.</li><li>Led data ecosystem optimization initiatives that removed approximately <strong>12,000 obsolete tables</strong>, improving governance and reducing operational complexity.</li><li>Regularly presented Data Governance strategy progress to the Executive Committee, aligning initiatives with business, technology, risk, compliance, and operations leaders.</li>",
+    section_experience: "💼 Professional Experience",
+    exp_1_company: "TENPO",
+    exp_1_date: "October 2023 – June 2026",
+    exp_1_role: "Data Governance Lead",
+    exp_1_desc: "Responsible for defining and implementing the corporate Data Governance strategy in an organization undergoing transformation into a bank, leading the creation of the Data Governance function, the development of the specialized team, and the implementation of organizational capabilities for comprehensive data management.",
+    exp_1_resp_title: "Key Responsibilities",
+    exp_1_resp_list: "<li>Design and implement the corporate Data Governance strategy.</li><li>Define the Data Governance operating model based on Data Mesh.</li><li>Design policies, standards, and Data Governance frameworks.</li><li>Lead a team of Data Governance Engineers.</li><li>Define and strengthen the roles of Data Owners, Data Stewards, and Data Custodians.</li><li>Lead Data Quality, Metadata, Access Governance, and Data Catalog initiatives.</li><li>Design the Personal Data Protection Law compliance strategy.</li><li>Lead the implementation of Data Contracts as the central governance mechanism.</li><li>Present progress and initiatives to the Executive Committee.</li><li>Coordinate cross-functional initiatives with Technology, Risk, Legal, Compliance, Finance, Operations, and Product.</li>",
+    exp_1_achiev_title: "Key Achievements",
+    exp_1_achiev_list: "<li>Complete construction of the Data Governance area from scratch.</li><li>Design of the Data Governance operating model.</li><li>Implementation of approximately <strong>2,000 Data Contracts</strong>.</li><li>Governance of more than <strong>28,000 data assets</strong> distributed across GCP and Azure.</li><li>Implementation of an RBAC model for approximately <strong>3,000 tables</strong>.</li><li>Design of an integrated Data Governance platform based on Data Contracts.</li><li>Training and development of a specialized team of four Data Governance Engineers.</li><li>Elimination of approximately <strong>12,000 obsolete tables</strong>, optimizing the data ecosystem.</li><li>Implementation of Data Governance processes used by around <strong>30 business areas</strong>.</li>",
+    exp_2_company: "UBER",
+    exp_2_date: "October 2020 – September 2023",
+    exp_2_role: "Data Governance Specialist",
+    exp_2_desc: "Responsible for strengthening Data Governance capabilities for Latin America, promoting quality standards, documentation, and metadata management, while supporting global initiatives to improve data asset administration.",
+    exp_2_resp_title: "Key Responsibilities & Achievements",
+    exp_2_list: "<li>Implementation of Data Governance standards for regional teams.</li><li>Management and improvement of metadata and data asset documentation.</li><li>Definition and monitoring of data quality indicators.</li><li>Collaboration with globally distributed multidisciplinary teams.</li><li>Participation in continuous improvement initiatives for Data Management processes.</li>",
+    exp_3_company: "ITAÚ CHILE",
+    exp_3_date: "December 2016 – September 2020",
+    exp_3_role: "Data Governance Analyst",
+    exp_3_desc: "Participated in the implementation and strengthening of Data Governance practices, supporting initiatives related to data quality, metadata management, documentation, and regulatory compliance within the organization.",
+    exp_3_resp_title: "Key Responsibilities & Achievements",
+    exp_3_list: "<li>Support for corporate Data Governance initiatives.</li><li>Data quality management and functional documentation.</li><li>Definition and maintenance of metadata.</li><li>Collaboration with business and technology areas.</li><li>Participation in regulatory and data transformation projects.</li>",
+    section_competencies: "🛠️ Competencies & Technologies",
+    comp_cat_dg: "🏛️ Data Governance",
+    comp_cat_lead: "👥 Leadership & Management",
+    comp_cat_cloud: "☁️ Technologies & Tools",
+    btn_pdf: "📄 Save as PDF",
+    btn_lang: "🇪🇸 ES"
+  }
+};
+
+let currentLang = localStorage.getItem('cv-lang') || 'es';
+
+function toggleLang() {
+  currentLang = currentLang === 'es' ? 'en' : 'es';
+  localStorage.setItem('cv-lang', currentLang);
+  applyLang();
+}
+
+function applyLang() {
+  const t = translations[currentLang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) {
+      if (el.tagName === 'UL') {
+        el.innerHTML = t[key];
+      } else {
+        el.innerHTML = t[key];
+      }
+    }
+  });
+  document.getElementById('langBtn').innerHTML = t.btn_lang;
+  document.querySelector('.toolbar button:first-child').innerHTML = t.btn_pdf;
+  document.documentElement.lang = currentLang;
+}
+
+function downloadPDF() {
+  window.print();
+}
+
+applyLang();
+</script>
+
+</body>
+</html>
