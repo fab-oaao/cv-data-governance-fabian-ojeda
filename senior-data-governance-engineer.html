@@ -357,6 +357,7 @@ body{
 
 <div class="toolbar no-print">
   <button onclick="downloadPDF()">📄 Guardar como PDF</button>
+  <button onclick="downloadLightPDF()">📄 PDF Light (&lt; 2 MB)</button>
   <button onclick="toggleLang()" id="langBtn">🇺🇸 EN</button>
 </div>
 
@@ -697,6 +698,7 @@ const translations = {
     comp_cat_de: "⚙️ Data Engineering & Tools",
     comp_cat_cloud: "☁️ Cloud & Visualization",
     btn_pdf: "📄 Guardar como PDF",
+    btn_light_pdf: "📄 PDF Light (< 2 MB)",
     btn_lang: "🇺🇸 EN"
   },
   en: {
@@ -749,6 +751,7 @@ const translations = {
     comp_cat_de: "⚙️ Data Engineering & Tools",
     comp_cat_cloud: "☁️ Cloud & Visualization",
     btn_pdf: "📄 Save as PDF",
+    btn_light_pdf: "📄 Light PDF (< 2 MB)",
     btn_lang: "🇪🇸 ES"
   }
 };
@@ -775,11 +778,42 @@ function applyLang() {
   });
   document.getElementById('langBtn').innerHTML = t.btn_lang;
   document.querySelector('.toolbar button:first-child').innerHTML = t.btn_pdf;
+  document.querySelector('.toolbar button:nth-child(2)').innerHTML = t.btn_light_pdf;
   document.documentElement.lang = currentLang;
 }
 
 function downloadPDF() {
   window.print();
+}
+
+function downloadLightPDF() {
+  const imgs = Array.from(document.querySelectorAll('.container img'));
+  const originals = [];
+
+  imgs.forEach(img => {
+    if (img.src.startsWith('data:image/svg') || !img.naturalWidth) return;
+    originals.push({ img, src: img.src });
+    try {
+      const canvas = document.createElement('canvas');
+      const maxDim = 1000;
+      let w = img.naturalWidth;
+      let h = img.naturalHeight;
+      if (w > maxDim || h > maxDim) {
+        const ratio = Math.min(maxDim / w, maxDim / h);
+        w = Math.round(w * ratio);
+        h = Math.round(h * ratio);
+      }
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      img.src = canvas.toDataURL('image/jpeg', 0.8);
+    } catch (e) {}
+  });
+
+  setTimeout(() => {
+    window.print();
+    originals.forEach(({ img, src }) => img.src = src);
+  }, 150);
 }
 
 applyLang();

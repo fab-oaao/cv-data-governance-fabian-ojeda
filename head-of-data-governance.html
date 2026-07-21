@@ -407,6 +407,7 @@ body{
 
 <div class="toolbar no-print">
   <button onclick="downloadPDF()">📄 Guardar como PDF</button>
+  <button onclick="downloadLightPDF()">📄 PDF Light (&lt; 2 MB)</button>
   <button onclick="toggleLang()" id="langBtn">🇺🇸 EN</button>
 </div>
 
@@ -761,10 +762,10 @@ body{
         <div>
           <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.3rem;font-weight:600" data-i18n="comp_cat_lead">👥 Liderazgo &amp; Gestión</div>
           <div class="tags">
-            <span class="tag tag-lead">Gestión del Cambio</span>
-            <span class="tag tag-lead">Liderazgo de Equipos</span>
-            <span class="tag tag-lead">Transformación Organizacional</span>
-            <span class="tag tag-lead">Gobierno Corporativo de Datos</span>
+            <span class="tag tag-lead" data-i18n="skill_lead_change">Gestión del Cambio</span>
+            <span class="tag tag-lead" data-i18n="skill_lead_team">Liderazgo de Equipos</span>
+            <span class="tag tag-lead" data-i18n="skill_lead_transform">Transformación Organizacional</span>
+            <span class="tag tag-lead" data-i18n="skill_lead_enterprise_dg">Gobierno Corporativo de Datos</span>
           </div>
         </div>
         <div>
@@ -863,7 +864,12 @@ const translations = {
     comp_cat_dg: "🏛️ Data Governance",
     comp_cat_lead: "👥 Liderazgo & Gestión",
     comp_cat_cloud: "☁️ Tecnologías & Herramientas",
+    skill_lead_change: "Gestión del Cambio",
+    skill_lead_team: "Liderazgo de Equipos",
+    skill_lead_transform: "Transformación Organizacional",
+    skill_lead_enterprise_dg: "Gobierno Corporativo de Datos",
     btn_pdf: "📄 Guardar como PDF",
+    btn_light_pdf: "📄 PDF Light (< 2 MB)",
     btn_lang: "🇺🇸 EN"
   },
   en: {
@@ -935,7 +941,12 @@ const translations = {
     comp_cat_dg: "🏛️ Data Governance",
     comp_cat_lead: "👥 Leadership & Management",
     comp_cat_cloud: "☁️ Technologies & Tools",
+    skill_lead_change: "Change Management",
+    skill_lead_team: "Executive Leadership & Team Development",
+    skill_lead_transform: "Enterprise Transformation",
+    skill_lead_enterprise_dg: "Enterprise Data Governance",
     btn_pdf: "📄 Save as PDF",
+    btn_light_pdf: "📄 Light PDF (< 2 MB)",
     btn_lang: "🇪🇸 ES"
   }
 };
@@ -962,11 +973,42 @@ function applyLang() {
   });
   document.getElementById('langBtn').innerHTML = t.btn_lang;
   document.querySelector('.toolbar button:first-child').innerHTML = t.btn_pdf;
+  document.querySelector('.toolbar button:nth-child(2)').innerHTML = t.btn_light_pdf;
   document.documentElement.lang = currentLang;
 }
 
 function downloadPDF() {
   window.print();
+}
+
+function downloadLightPDF() {
+  const imgs = Array.from(document.querySelectorAll('.container img'));
+  const originals = [];
+
+  imgs.forEach(img => {
+    if (img.src.startsWith('data:image/svg') || !img.naturalWidth) return;
+    originals.push({ img, src: img.src });
+    try {
+      const canvas = document.createElement('canvas');
+      const maxDim = 1000;
+      let w = img.naturalWidth;
+      let h = img.naturalHeight;
+      if (w > maxDim || h > maxDim) {
+        const ratio = Math.min(maxDim / w, maxDim / h);
+        w = Math.round(w * ratio);
+        h = Math.round(h * ratio);
+      }
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      img.src = canvas.toDataURL('image/jpeg', 0.8);
+    } catch (e) {}
+  });
+
+  setTimeout(() => {
+    window.print();
+    originals.forEach(({ img, src }) => img.src = src);
+  }, 150);
 }
 
 applyLang();
